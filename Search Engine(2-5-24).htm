@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Author" content="Abubakr">
+  <meta name="Description" content="A web page designed to work as a search engine with a google logo and theme that finds results from google.">
+    <title>My Search Engine </title>
+    <style>
+    /*Css can be edited from here*/
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+    /*logo taken from google */
+        .logo {
+            width: 200px;
+            margin: 50px auto;
+            display: block;
+          margin-top:100px;
+          color:Red;
+          font-size:40px; 
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: calc(100% - 100px);
+            margin-right: 10px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus {
+            border-color: #4d90fe;
+        }
+        button {
+            padding: 8px 20px;
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #1a0dab;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .nav-buttons {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .nav-buttons button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .account-option {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            width: 80px;
+            height: 40px;
+            background-color: white;
+            border-radius: 95%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;s
+        }
+        /* Hide header elements initially */
+        .hide-header {
+            display: none;
+        }
+  p{ 
+    text-align: center;
+    margin-top:1100px;
+    font-family: arial, calibri;
+    font-size:12px;
+  }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-buttons hide-header">
+        <button onclick="navigatePrevious()">&lt;</button>
+        <button onclick="navigateNext()">&gt;</button>
+    </div>
+    <div class="account-option" onclick="redirectToAccount()">Account</div>
+    <!-- Rest of your HTML code -->
+    <H1 class="logo">M S E</H1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search or type Url">
+            <button onclick="search()">Search</button>
+        </div>
+        <ul id="searchResults"></ul>
+    </div>
+  </div>
+
+    <script>
+        var searchResults = []; // Store search results globally
+        var currentIndex = 0; // Track current index of displayed results
+
+        function search() {
+            var query = document.getElementById('searchInput').value;
+            var apiKey = 'AIzaSyBLO3kgOJALEZ_G6M5C05sEcGx64quJI10'; // Replace with your Google Custom Search API key
+            var cx = 'a05d4f620ee214da7'; // Replace with your Custom Search Engine ID
+            var url = `https://www.googleapis.com/customsearch/v1?q=${query}&key=${apiKey}&cx=${cx}`;
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                searchResults = data.items; // Store results globally
+                displayResults(searchResults);
+                // Show header elements after results are displayed
+                document.querySelectorAll('.hide-header').forEach(el => el.style.display = 'block');
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+        }
+
+        function displayResults(results) {
+            var resultList = document.getElementById('searchResults');
+            resultList.innerHTML = ''; // Clear previous results
+            results.forEach(function(result) {
+                var title = result.title;
+                var link = result.link;
+                var snippet = result.snippet;
+                var listItem = document.createElement('li');
+                var linkElement = document.createElement('a');
+                linkElement.textContent = title;
+                linkElement.setAttribute('href', link);
+                listItem.appendChild(linkElement);
+                var snippetElement = document.createElement('p');
+                snippetElement.textContent = snippet;
+                listItem.appendChild(snippetElement);
+                resultList.appendChild(listItem);
+            });
+        }
+
+        // Function to navigate to previous page
+        function navigatePrevious() {
+            window.history.back();
+        }
+
+        // Function to navigate to next page
+        function navigateNext() {
+            window.history.forward();
+        }
+
+        // Function to redirect to account page
+        function redirectToAccount() {
+    window.location.href = "https://myaccount.google.com/";
+}
+
+
+    </script>
+</body>
+</html>
